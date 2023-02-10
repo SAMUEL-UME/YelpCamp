@@ -30,6 +30,9 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
   console.log("Database connected");
+  app.listen(4000, () => {
+    console.log("Serving on port 3000");
+  });
 });
 
 const app = express();
@@ -106,6 +109,4 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { err });
 });
 
-app.listen(4000, () => {
-  console.log("Serving on port 3000");
-});
+
