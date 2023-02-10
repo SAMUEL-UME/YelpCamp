@@ -1,0 +1,14 @@
+#cluster-map {
+  width: 100%;
+  height: 500px;
+ margin-top: ;
+}
+
+#map {
+  width: 100%;
+  height: 300px;
+}
+
+body{
+    background: #e1e3e1;
+}

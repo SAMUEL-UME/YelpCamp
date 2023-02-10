@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -10,12 +13,14 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const morgan = require("morgan");
-
+const mongoSanitize = require("express-mongo-sanitize");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 const usersRoutes = require("./routes/users");
+const MongoStore = require('connect-mongo');
+require("dotenv").config();
 
-mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp", {
+mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -32,24 +37,40 @@ const app = express();
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(mongoSanitize());
+
+// const store = new MongoStore.c({
+//   url: process.env.MONGODB_URL,
+//   secret: "thisshouldbeabettersecret",
+//   touchAfter: 24 * 60 * 60
+// })
+
+// store.on("error", function (e) {
+//   console.log("SESSION STORE ERROR", e)
+// })
 
 const sessionConfig = {
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URL,
+    secret: "thisshouldbeabettersecret",
+    touchAfter: 24 * 360
+  }),
+  name: "session",
   secret: "thisshouldbeabettersecret",
   resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
+    // secure: true,
     expires: Date.now() + 1000 * 60 * 60 * 27 * 7,
     maxAge: 1000 * 60 * 60 * 27 * 7,
   },
 };
 
 app.use(morgan("dev"));
-4;
 app.use(session(sessionConfig));
 app.use(flash());
 app.use(passport.initialize());
