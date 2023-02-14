@@ -4,10 +4,10 @@
   const mapToken = '<%=process.env.MAPBOX_TOKEN %>';  
   const campground = <%- JSON.stringify(campground)%>
 </script> 
+<div id="map" style="width: 100%; height: 300px;"></div>
 <div class="container mt-5">
   <div class="row row-cols-lg-2 row-cols-sm-1">
     <div class="col-lg-6">
-      <div id='map' ></div>
       <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
           <% campground.images.forEach((img, i)=>{%>
@@ -154,5 +154,9 @@
     </div>
   </div>
 </div>
+
+<script>
+
+</script>
 
 <script src="/javascripts/showPageMap.js"></script>
