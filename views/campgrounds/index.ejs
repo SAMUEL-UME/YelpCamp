@@ -6,13 +6,19 @@
   <% for (let campground of campgrounds){%>
   <div class="card mb-5 p-3 shadow-lg rounded">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-4" style="height: 250px">
         <%if(campground.images.length) {%>
-        <img class="img-fluid"style="width: 100%; object-fit: cover; height: 100%;" alt="" src="<%=campground.images[0].url %>" />
+        <img
+          class="img-fluid w-100"
+          style="object-fit: cover; height: 100%; width: fit-content"
+          alt=""
+          src="<%=campground.images[0].url %>"
+          loading="lazy"
+        />
         <% }else {%>
         <img
-        
           class="img-fluid"
+          style="width: fit-content; object-fit: cover; height: 100%"
           alt=""
           src="https://cdn.thewirecutter.com/wp-content/media/2022/06/summer-camp-2048px-1199232997-2x1-1.jpg?auto=webp&quality=75&crop=2:1&width=1024"
         />
